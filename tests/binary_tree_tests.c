@@ -81,6 +81,61 @@ DEFINE_TEST(test_remove_empty)
     return NULL;
 }
 
+DEFINE_TEST(test_remove_2)
+{
+    binary_tree *tree = NULL;
+    tree = binary_tree_insert(tree, 2);
+
+    tree = binary_tree_remove(tree, 2);
+    test_assert(tree == NULL, "remove 2 on tree with just 2 returns NULL");
+
+    return NULL;
+}
+
+DEFINE_TEST(test_remove_2_1_3)
+{
+    binary_tree *tree = NULL;
+
+    tree = binary_tree_insert(tree, 2);
+    tree = binary_tree_insert(tree, 1);
+    tree = binary_tree_insert(tree, 3);
+
+    tree = binary_tree_remove(tree, 3);
+    test_assert(tree->value == 2, "remove 3 on 2-1-3 gives root node 2");
+    test_assert(tree->left != NULL, "tree has left child");
+    test_assert(tree->left->value == 1, "left child is 1");
+    test_assert(tree->left->left == NULL, "left child has no left child");
+    test_assert(tree->left->right == NULL, "left child has no right child");
+    test_assert(tree->right == NULL, "tree has no right child");
+
+    return NULL;
+}
+
+DEFINE_TEST(test_remove_2_1_4_5_3)
+{
+    binary_tree *tree = NULL;
+
+    tree = binary_tree_insert(tree, 2);
+    tree = binary_tree_insert(tree, 1);
+    tree = binary_tree_insert(tree, 3);
+    tree = binary_tree_insert(tree, 5);
+    tree = binary_tree_insert(tree, 4);
+
+    tree = binary_tree_remove(tree, 2);
+    test_assert(tree->value == 3, "remove 2 on 2-1-4-5-3 gives root node 3");
+    test_assert(tree->left != NULL, "tree has left child");
+    test_assert(tree->left->value == 1, "left child is 1");
+    test_assert(tree->left->left == NULL, "left child has no left child");
+    test_assert(tree->left->right == NULL, "left child has no right child");
+    test_assert(tree->right != NULL, "tree has right child");
+    test_assert(tree->right->value == 5, "right child is 5");
+    test_assert(tree->right->left != NULL, "right child has left child");
+    test_assert(tree->right->left->value == 4, "right child has left child 4");
+    test_assert(tree->right->right == NULL, "right child has no right child");
+
+    return NULL;
+}
+
 DEFINE_TEST(all_tests)
 {
     test_run(test_insert_empty);
@@ -90,6 +145,9 @@ DEFINE_TEST(all_tests)
     test_run(test_search_2_1_3);
 
     test_run(test_remove_empty);
+    test_run(test_remove_2);
+    test_run(test_remove_2_1_3);
+    test_run(test_remove_2_1_4_5_3);
 
     return NULL;
 }
