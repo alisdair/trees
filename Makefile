@@ -1,4 +1,4 @@
-CFLAGS+=-Wall -Werror -Isrc -std=c99 -O2
+CFLAGS+=-g -Wall -Werror -Isrc -std=c99 -O2
 
 SRCS=$(wildcard src/**/*.c src/*.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS))
@@ -19,12 +19,17 @@ build:
 	@mkdir -p build
 	@mkdir -p bin
 
+$(TESTS): $(TEST_SRCS) $(TARGET)
+
 tests: CFLAGS += $(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
+
+valgrind:
+	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
 
 clean:
 	rm -rf build $(OBJS) $(TESTS)
 	rm -f tests/tests.log
 
-.PHONY: all tests clean
+.PHONY: all tests clean valgrind
