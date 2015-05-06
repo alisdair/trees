@@ -19,7 +19,7 @@ build:
 	@mkdir -p build
 	@mkdir -p bin
 
-$(TESTS): $(TEST_SRCS) $(TARGET)
+$(TESTS): $(TARGET)
 
 tests: CFLAGS += $(TARGET)
 tests: $(TESTS)
